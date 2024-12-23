@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация преподавателя</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'teacher/teacher_style.css' %}">
+</head>
+<body>
+    <div class="main-container">
+        <div class="container">
+            <!-- Левая часть с формой -->
+            <div class="left-side">
+                <form action=" {% url 'teacher' %} " method="POST">
+                    {% csrf_token %}
+
+                    <h1>Отметка студента</h1>
+                    
+                    {% if error %}
+                        <p class="error">{{ error }}</p>
+                    {% endif %}
+                    
+                    <div>
+                        <label for="login">Логин (почта):</label>
+                        <input id="login" type="text" name="login" spellcheck="false" placeholder="teacher@tpu.ru" required>
+                    </div>
+                    
+                    <div>
+                        <label for="pass">Пароль:</label>
+                        <input id="pass" type="password" name="pass" spellcheck="false" placeholder="••••••" required>
+                    </div>
+
+                    <div class="wrapper">
+                        <button class="c-button" type="submit">Войти</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Правая часть -->
+            <div class="right-side">
+                <img src="{% static 'teacher/tpu_logo.png' %}" alt="Логотип ТПУ">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

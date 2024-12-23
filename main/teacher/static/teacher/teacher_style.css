@@ -1,0 +1,247 @@
+/* Сброс отступов и боксов */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Фон всей страницы */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #d9e3f8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Основной контейнер фиксированного размера */
+.main-container {
+    width: 90%;
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+/* Контейнер для левой и правой частей */
+.container {
+    width: 100%;
+    height: 500px; /* Фиксированная высота для одинакового размера на всех страницах */
+    display: flex;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+/* Левая часть */
+.left-side {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+/* Заголовок формы */
+.left-side h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Сообщение об ошибке */
+.error {
+    color: red;
+    margin-bottom: 15px;
+}
+
+/* Поля ввода (универсальные стили) */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f0f4fc; /* Единый цвет фона */
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: #29bf46; /* Цвет при фокусе */
+}
+
+/* Обёртка для кнопки и QR-кода */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Кнопка */
+.c-button {
+    background-color: #29bf46;
+    color: #fff;
+    padding: 14px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    text-decoration: none; /* Убираем подчеркивание для ссылок */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block; /* Для кнопки-вылезки как ссылки */
+}
+
+.c-button:hover {
+    background-color: #24a53d;
+}
+
+/* Кнопка удаления*/
+.c-buttond {
+    background-color: #ce2711;
+    color: #fff;
+    padding: 14px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    width: 45%;
+    text-align: center;
+    text-decoration: none; /* Убираем подчеркивание для ссылок */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block; /* Для кнопки-вылезки как ссылки */
+}
+
+.c-buttond:hover {
+    background-color: #b92613;
+}
+
+/* Кнопка добавления студентов*/
+.c-buttona {
+    background-color: #29bf46;
+    color: #fff;
+    padding: 14px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    text-decoration: none; /* Убираем подчеркивание для ссылок */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block; /* Для кнопки-вылезки как ссылки */
+}
+
+.c-buttona:hover {
+    background-color: #24a53d;
+}
+
+/* QR-код */
+.qr-code {
+    display: flex;
+    padding: 20px 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.qr-code img {
+    width: 200px;
+    border-radius: 10px;
+}
+
+/* Ссылка "Выйти" стилизована как кнопка */
+.logout-link,
+.wrapper a.c-button {
+    background-color: #29bf46;
+    color: #fff;
+    padding: 14px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    text-decoration: none; /* Убираем подчеркивание для ссылок */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block; /* Для кнопки-вылезки как ссылки */
+}
+
+.logout-link:hover,
+.wrapper a.c-button:hover {
+    background-color: #24a53d;
+}
+
+/* Правая часть */
+.right-side {
+    flex: 1;
+    background-color: #29bf46;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    border-top-left-radius: 30%;
+    border-bottom-left-radius: 30%;
+}
+
+/* Логотип внутри зелёного блока */
+.right-side img {
+    width: 200px;
+    margin-bottom: 20px;
+}
+
+/* Вынесенная таблица студентов */
+.students-table-container {
+    width: 90%;
+    max-width: 900px;
+    margin: 20px auto; /* Отступ сверху и снизу */
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.1);
+    padding: 20px;
+}
+
+.students-table-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Таблица студентов */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f2f2f2;
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        height: auto; /* Автоматическая высота на мобильных устройствах */
+    }
+
+    .right-side {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .students-table-container {
+        width: 95%;
+    }
+}

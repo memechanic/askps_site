@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <link rel="stylesheet" type="text/css" href="{% static 'student/student_style.css' %}">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" 
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        
+        <title>Авторизация</title>
+    </head>
+<body>
+    
+    <div class="container" id="container">
+
+        <div class="form-container">
+            <form action="{% url 'student' %}" method='POST'>
+                {% csrf_token %}
+                <input type="hidden" name="class_id" value="{{ class_id }}">
+                <h1>Отметка студента</h1>
+                <input type="login" name="login" placeholder="Логин" required>
+                <input type="password" name="password" placeholder="Пароль" required>
+
+                {% if error %}
+                    <p class="error">{{ error }}</p>
+                {% endif %}
+
+                <button type="submit">Отметиться</button>
+            </form>
+            
+        </div>
+        
+        <div class="toggle-container">
+            <img class="logo" src="{% static 'student/tpu_logo.png' %}"  alt="TPU LOGO">
+        </div>
+
+    </div>
+
+</body>
+</html>
