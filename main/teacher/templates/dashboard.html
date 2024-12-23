@@ -14,7 +14,8 @@
                 <h1>Добро пожаловать, {{ user_login }}!</h1>
                 <p>Ваш QR-код для отметки студентов:</p>
                 <div class="qr-code">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://127.0.0.1:8000/student/?class_id={{ class_id }}" alt="QR-код">
+                    {% url 'student' as student_url %}
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://askps.pythonanywhere.com{{ student_url }}?class_id={{ class_id }}" alt="QR-код">
                 </div>
 
                 <form method="POST">
