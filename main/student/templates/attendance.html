@@ -13,7 +13,6 @@
 <body>
     <div class="container">
         <h1>История посещаемости</h1>
-        <p>{{class_id}}</p>
         <table>
             <thead>
                 <tr>
@@ -24,14 +23,16 @@
                 </tr>
             </thead>
             <tbody id="attendanceTable">
-                
-                <tr>
-                    <td>{{ student.group_name }}</td>
-                    <td>{{ student.fio }}</td>
-                    <td>{{ class.subject }}</td>
-                    <td>{{ class.date }}</td>
-                </tr>
+                {% for class in classes %}
 
+                    <tr>
+                        <td>{{ student.group_name }}</td>
+                        <td>{{ student.fio }}</td>
+                        <td>{{ class.subject }}</td>
+                        <td>{{ class.date }}</td>
+                    </tr>
+
+                {% endfor %}
             </tbody>
         </table>
     </div>

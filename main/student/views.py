@@ -34,15 +34,31 @@ def attendance(request):
         return redirect('student')
 
     student = People.objects.get(id=student_id)
-    cur_class = Classes.objects.get(id=class_id)
 
-    attendance_record = Attendance.objects.create(
-        class_id = class_id,
-        student_id = student_id,
-        qr_check = True,
-        skud_check = True,
-    )
+    attendance_exist = Attendance.objects.filter(class_id=class_id, student_id=student_id)
 
-    attendance_record.save()
+    if not attendance_exist:
 
-    return render(request, 'attendance.html', {'student': student, 'class': cur_class})
+        attendance_record = Attendance.objects.create(
+            class_id = class_id,
+            student_id = student_id,
+            qr_check = True,
+            skud_check = True,
+        )
+
+        attendance_record.save()
+
+    else:
+        pass
+
+    classes = []
+
+    attendances = Attendance.objects.filter(student_id=student_id)
+
+    for att in attendances:
+        cls_id = att.class_id
+        classes.append(
+            Classes.objects.get(id=cls_id)
+        )
+
+    return render(request, 'attendance.html', {'student': student, 'classes': classes})
