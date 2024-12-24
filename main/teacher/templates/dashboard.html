@@ -11,7 +11,7 @@
         <div class="container">
             <!-- Левая часть (QR-код) -->
             <div class="left-side">
-                <h1>Добро пожаловать, {{ user_login }}!</h1>
+                <h1>Добро пожаловать, {{ teacher_fio }}!</h1>
                 <p>Ваш QR-код для отметки студентов:</p>
                 <div class="qr-code">
                     {% url 'student' as student_url %}
@@ -36,7 +36,7 @@
     <div class="students-table-container">
         <h2>Список студентов</h2>
         <!-- Форма для добавления студента -->
-        <form action="" method="POST" class="add-student-form">
+        <form method="POST" class="add-student-form">
             {% csrf_token %}
             <div class="form-group">
                 <input type="text" name="student_name" placeholder="Введите имя студента" required>
@@ -51,17 +51,155 @@
                     <th>Действия</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id = 't_stud'>
                 {% for student in students %}
                     <tr>
                         <td>{{ student.name }}</td>
                         <td>
-                            <a href="" class="c-buttond delete-button">Удалить</a>
+                            <a href="#" class="c-buttond delete-button">Удалить</a>
+                            
                         </td>
+                        <input type="hidden" class="attendanceId" value="{{ student.attendace_id }}">
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+    <script>
+
+        document.addEventListener('click', function(event) {
+            if (event.target.matches('.delete-button')) {
+                event.preventDefault();
+        
+                const row = event.target.closest('tr'); // Находим строку таблицы
+                if (!row) return; // Если строка не найдена, выход
+
+                const inputH = row.querySelector('.attendanceId'); // Находим input внутри строки
+                if (!inputH) {
+                    console.error('ID записи отсутствует');
+                    return;
+                }
+
+                const attendanceId = inputH.value; 
+        
+                const confirmation = confirm('Вы уверены, что хотите удалить запись?');
+                if (!confirmation) return;
+        
+                fetch(`/api/students/delete/${attendanceId}/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Запись успешно удалена');
+                        row.parentNode.removeChild(row);
+                    } else {
+                        alert('Ошибка: ' + (data.error || 'Неизвестная ошибка'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                });
+            }
+        });
+
+        // Получение CSRF-токена из cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+        document.querySelector('.add-student-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Предотвращение стандартной отправки формы
+        
+            const studentNameInput = document.querySelector('input[name="student_name"]');
+            const studentName = studentNameInput.value.trim();
+        
+            if (studentName === '') {
+                alert('Пожалуйста, введите имя студента.');
+                return;
+            }
+        
+            fetch("{% url 'add_student' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({'name': studentName})
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка сети: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert('Студент успешно добавлен');
+                } else {
+                    alert('Ошибка: ' + (data.error || 'Неизвестная ошибка'));
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        });
+
+
+        function fetchStudents(){
+            fetch("{% url 'get_students' %}")
+                .then(response => response.json())
+                .then(data => {
+                    const students = data.students;
+                    const tbody = document.getElementById('t_stud');
+                    tbody.innerHTML = '';
+
+                    students.forEach(student => {
+                        const tr = document.createElement('tr');
+
+                        const tdname = document.createElement('td');
+                        tdname.textContent = student.name;
+                        tr.appendChild(tdname)
+
+                        tdaction = document.createElement('td');
+                        
+                        const deletelink = document.createElement('a');
+                        deletelink.className = 'c-buttond delete-button';
+                        deletelink.textContent = 'Удалить';
+                        
+                        tdaction.appendChild(deletelink);
+                        tr.appendChild(tdaction)
+                        
+                        const hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.className = 'attendanceId';
+                        hiddenInput.value = `${student.attendance_id}`;
+
+                        tr.appendChild(hiddenInput)
+
+                        tbody.appendChild(tr)
+                    });
+                });
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchStudents();  // Первоначальный загрузка данных
+            setInterval(fetchStudents, 5000);  // Обновление данных каждые 5 секунд
+        });
+    </script>
 </body>
 </html>
